@@ -39,7 +39,7 @@ macro_rules! rutie_serde_methods {
         $exception_class:expr,
 
         fn $method_name:ident($($arg_name:ident: $arg_type:ty),* $(,)*) -> Result<$return_type:ty, $error_type:ty>
-        $body:block
+        $body:block,
 
         $($other_methods:tt)*
     ) => {
@@ -143,7 +143,7 @@ macro_rules! rutie_serde_methods {
         $exception_class:expr,
 
         fn $method_name:ident($($arg_name:ident: $arg_type:ty),* $(,)*) -> $return_type:ty
-        $body:block
+        $body:block,
 
         $($other_methods:tt)*
     ) => {
@@ -159,7 +159,7 @@ macro_rules! rutie_serde_methods {
 
                 #[allow(unreachable_code)]
                 Ok(return_value)
-            }
+            },
 
             $($other_methods)*
         );
