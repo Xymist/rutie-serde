@@ -11,7 +11,8 @@ categories = ["external-ffi-bindings"]
 license = "MIT"
 
 [dependencies]
-rutie = {git="https://github.com/danlarkin/rutie", features=["no-link"]}
+rutie = {version = "0.8", features=["no-link"]}
 serde = "1.0"
 serde_json = "1.0"
 log = "^0.4"
+rust_decimal = "1.7.0"
