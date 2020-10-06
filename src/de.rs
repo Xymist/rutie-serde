@@ -106,12 +106,24 @@ impl<'de, 'a> de::Deserializer<'de> for Deserializer {
         }
     }
 
+    // Semifrequently required to treat a "1" as a "True", especially
+    // with Rails or MySQL
     fn deserialize_bool<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
     {
         debug!("Deserialize bool");
-        let o = try_convert_to!(self.object, Boolean)?.to_bool();
+        let class_name = object_class_name(&self.object)?;
+        let o = if class_name == "Fixnum" || class_name == "Integer" {
+            let b_int = self.deserialize_long()?;
+            if b_int > 1 || b_int < 0 {
+                panic!("No rule for converting Integer value {} to Boolean", b_int);
+            }
+            b_int == 1
+        } else {
+            try_convert_to!(self.object, Boolean)?.to_bool()
+        };
+
         debug!("Deserialized: {}", o);
         visitor.visit_bool(o)
     }
